@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset ="utf-8">
+		<title>2015 Canadian Tax Calculator</title>
+		<style>
+			table, th, td {border: 2px solid black; border-collapse: collapse;}
+		</style>
+		<script>
+			var provinces = ["British Columbia", 
+							"Alberta", 
+							"Saskatchewan", 
+							"Manitoba", 
+							"Ontario", 
+							"Quebec", 
+							"Prince Edward Island", 
+							"Newfoundland and Labrador", 
+							"Nova Scotia", 
+							"New Brunswick", 
+							"Nunavut", 
+							"Northwest Territories", 
+							"Yukon"];
+
+			var output = "";
+
+			function setup(){
+				var cButton = document.getElementById("calc");
+				cButton.addEventListener("click", function(){calculate(document.getElementById("income").value)}, false);
+			}
+			function calculate(income){
+
+				output = "<table><tr>"+
+				"<td><strong>Province Name</strong></td>"+
+				"<td><strong>Provincial Tax</strong></td>"+
+				"<td><strong>Federal Tax</strong></td>"+
+				"<td><strong>Total Tax</strong></td>"+
+				"<td><strong>Effective Tax %</strong></td>"+
+				"<td><strong>NET Income</strong></td></tr>";
+
+				for (i in provinces){
+					var pTax = parseFloat(provTax(i, income)).toFixed(2);
+					var fTax = parseFloat(fedTax(income)).toFixed(2);
+					var total = (parseFloat(pTax) + parseFloat(fTax)).toFixed(2);
+					var diff = (income - total).toFixed(2);
+					output += "<tr><td>"+provinces[i]+"</td><td>"+pTax+"</td><td>"+fTax+"</td><td>"+total+"</td><td>"+((total/income)*100).toFixed(2)+ "%</td><td>"+diff+"</td></tr>";
+				}
+				output += "</table>";
+				var outputText = document.getElementById("output");
+				outputText.innerHTML = "";
+				outputText.innerHTML = output;
+			}
+			function provTax(i, income){
+				var j = parseInt(i);
+				switch (j){
+
+					//British Columbia
+					case 0: if(income <= 37869){
+								return (income * 0.0506).toFixed(2);
+							} else if (37869 < income && income <= 75740){
+								return (((income - 37869)*0.077)+1916.17).toFixed(2);
+							} else if (75740 < income && income <= 86958){
+								return (((income - 75740)*0.105)+4832.24).toFixed(2);
+							} else if (86958 < income && income <= 105592){
+								return (((income - 86958)*0.1229)+6010.13).toFixed(2);
+							} else if (105592 < income && income <= 151050){
+								return (((income - 105592)*0.1470)+8300.25).toFixed(2);
+							} else if (151050 < income){
+								return (((income - 151050)*0.168)+14982.58).toFixed(2);
+							}
+
+					//Alberta
+					case 1: return (income * 0.1); 
+
+					//Saskatchewan
+					case 2: if(income <= 44028){
+								return (income * 0.11).toFixed(2);
+							} else if (44028 < income && income <= 125795){
+								return (((income - 44028)*0.13)+4843.08).toFixed(2);
+							} else if (income > 125795){
+								return (((income - 125795)*0.15)+15472.79).toFixed(2);
+							}
+
+					//Manitoba
+					case 3: if(income <= 31000){
+								return (income * 0.108).toFixed(2);
+							} else if (31000 < income && income <= 67000){
+								return (((income - 31000)*0.1275)+3348).toFixed(2);
+							} else if (income > 67000){
+								return (((income - 67000)*0.174)+7938).toFixed(2);
+							}
+
+					//Ontario
+					case 4: if(income <= 40922){
+								return (income * 0.0505).toFixed(2);
+							} else if (40922 < income && income <= 81847){
+								return (((income - 40922)*0.0915)+2066.56).toFixed(2);
+							} else if (81847 < income && income <= 150000){
+								return (((income - 81847)*0.1116)+5811.20).toFixed(2);
+							} else if (150000 < income && income <= 220000){
+								return (((income - 86958)*0.1216)+13417.07).toFixed(2);
+							} else if (220000 < income){
+								return (((income - 105592)*0.1470)+21929.07).toFixed(2);
+							}
+
+					//Quebec
+					case 5: if(income <= 41935){
+								return (income * 0.16).toFixed(2);
+							} else if (41935 < income && income <= 83865){
+								return (income * 0.20).toFixed(2);
+							} else if (83865 < income && income <= 102040){
+								return (income * 0.24).toFixed(2);
+							} else if (income > 102040){
+								return (income * 0.2575).toFixed(2);
+							}
+
+					//Prince Edward Island
+					case 6: if(income <= 31984){
+								return (income * 0.098).toFixed(2);
+							} else if (31984 < income && income <= 63969){
+								return (((income - 31984)*0.138)+3134.43).toFixed(2);
+							} else if (income > 63969){
+								return (((income - 63969)*0.167)+7548.36).toFixed(2);
+							}
+
+					//Newfoundland and Labrador
+					case 7: if(income <= 35008){
+								return (income * 0.077).toFixed(2);
+							} else if (35008 < income && income <= 70015){
+								return (((income - 35008)*0.125)+2695.62).toFixed(2);
+							} else if (income > 70015){
+								return (((income - 70015)*0.133)+7071.50).toFixed(2);
+							}
+
+					//Nova Scotia
+					case 8: if(income <= 29590){
+								return (income * 0.0879).toFixed(2);
+							} else if (29590 < income && income <= 59900){
+								return (((income - 29590)*0.1495)+2600.96).toFixed(2);
+							} else if (59900 < income && income <= 93720){
+								return (((income - 59900)*0.1667)+7024.67).toFixed(2);
+							} else if (93720 < income && income <= 150720){
+								return (((income - 93720)*0.175)+12662.46).toFixed(2);
+							} else if (150720 < income){
+								return (((income - 150720)*0.21)+22637.46).toFixed(2);
+							}
+
+					//New Brunswick
+					case 9: if(income <= 39973){
+								return (income * 0.0968).toFixed(2);
+							} else if (39973 < income && income <= 79946){
+								return (((income - 39973)*0.1482)+3869.39).toFixed(2);
+							} else if (79946 < income && income <= 129975){
+								return (((income - 79946)*0.1652)+9793.39).toFixed(2);
+							} else if (129975 < income){
+								return (((income - 129975)*0.1784)+18058.18).toFixed(2);
+							}
+
+					//Nunavut
+					case 10: if(income <= 42622){
+								return (income * 0.04).toFixed(2);
+							} else if (42622 < income && income <= 85243){
+								return (((income - 42622)*0.07)+1704.88).toFixed(2);
+							} else if (85243 < income && income <= 138586){
+								return (((income - 85243)*0.09)+4688.35).toFixed(2);
+							} else if (138586 < income){
+								return (((income - 138586)*0.115)+9489.22).toFixed(2);
+							}
+
+					//Northwest Territories
+					case 11: if(income <= 40484){
+								return (income * 0.059).toFixed(2);
+							} else if (42622 < income && income <= 80971){
+								return (((income - 42622)*0.086)+2388.56).toFixed(2);
+							} else if (80971 < income && income <= 131641){
+								return (((income - 80971)*0.122)+5870.44).toFixed(2);
+							} else if (131641 < income){
+								return (((income - 131641)*0.1405)+12052.18).toFixed(2);
+							}
+					//Yukon
+					case 12: if(income <= 44701){
+								return (income * 0.0704).toFixed(2);
+							} else if (42622 < income && income <= 89401){
+								return (((income - 42622)*0.0968)+3146.95).toFixed(2);
+							} else if (89401 < income && income <= 138586){
+								return (((income - 89401)*0.1144)+7473.91).toFixed(2);
+							} else if (138586 < income){
+								return (((income - 138586)*0.1276)+13100.67).toFixed(2);
+							}
+				}
+
+			}
+			function fedTax(income){
+				if(income <= 44701){
+					return (income * 0.15).toFixed(2);
+				} else if (44701 < income && income <= 89401){
+					return (((income - 44701)*0.22)+6705).toFixed(2);
+				} else if (89401 < income && income <= 138586){
+					return (((income - 89401)*0.26)+16539).toFixed(2);
+				} else if (138586 < income){
+					return (((income - 138586)*0.29)+29327).toFixed(2);
+				}
+			}
+
+			window.addEventListener("load", setup, false);
+		</script>
+	</head>
+
+	<body>
+		<h1>Enter Income Before Taxes in Canadian Dollars</h1>
+
+		<form action ="#">
+
+			<p>	<label>Income:<input id = "income" type = "text"
+					size = "10" maxlength = "20"></label>
+
+			<p><input id = "calc" type = "button" value = "Calculate!">
+
+		</form>
+
+		<div id = "output"></div><br>
+		<div id = "disclaimer"><i>* Note: all output is based on 2015 rates quoted from the <a href = "http://www.cra-arc.gc.ca/tx/ndvdls/fq/txrts-eng.html">Canadian Revenue Agency Website</a> as well as the <a href = "http://www.revenuquebec.ca/en/citoyen/situation/nouvel-arrivant/regime-fiscal-du-quebec/taux-imposition.aspx">Revenu Quebec Website</a></i></div><br>
+		<div id = "disclaimer2"><i>** Calculations do not take into account any tax shelters, deductions, etc.</i></div>
+	</body>
+</html>
